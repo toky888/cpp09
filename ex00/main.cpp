@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 09:02:19 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/19 14:01:04 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/19 15:01:41 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,11 +20,11 @@ void printMap(T map){
 	}
 }
 
-// int	main(int argv, std::string *argc)
-int	main()
+int	main(int argv, char **argc)
 {
-	// if (argv != 2)
-	// 	return (1, std::cout << "Error: invalid argument number" << std::endl);
+	argc = NULL;
+	if (argv != 2)
+		return (std::cout << "Error: invalid argument number" << std::endl, 1);
 	try {
 		Btc	data;
 		printMap(data.getDataMap());
