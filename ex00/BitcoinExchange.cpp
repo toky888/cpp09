@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/20 19:02:08 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/21 17:42:05 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,17 +106,77 @@ void	Btc::trim_char(std::string& s, char c)
         s.erase(s.size() - 1, 1);
 }
 
-void	Btc::verifyLine(std::string const &line) {
+bool Btc::isDouble(std::string const &s) {
+	char *		end;
+	int			check;
+	std::string	str;
+	
+	if (s.empty())
+		return false;
+	end = NULL;
+	str = s;
+	check = 0;
+	std::strtod(str.c_str(), &end);
+	return (check == 0 && end == str.c_str() + str.size()); 
+}
+
+e_error	Btc::checkLineForSwitch(std::string const &line) {
 	std::stringstream	rawLine(line);
 	std::string			date;
 	std::string			value;
-	
-	if ((std::count(line.begin(), line.end(), '|') != 1)) {
-		std::cout << "Error: bad header input =>" << line << std::endl;
-		return ;
-	}
+	std::string			value1000;
+	int					lengthExtractSafe;
+
+	//--------------***HANDLE '|' ***-------------
+
+	if ((std::count(line.begin(), line.end(), '|') != 1))
+		return BAD_INPUT;
 	std::getline(rawLine, date, '|');
 	std::getline(rawLine, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
+	
+	//--------------***HANDLE VALUE ***-------------
+	//HANDLE NON NUM VALUE AND NEGATIVE
+	if (!Btc::isDouble(value))
+		return NOT_NUM;
+	if (value[0] == '-')
+		return NEGATIVE_NUM;
+	//HANDLE 1000
+	lengthExtractSafe = std::min(4, static_cast<int>(value.length()));
+	value1000 = value.substr(0, lengthExtractSafe);
+	std::stringstream	val1000(value1000);
+	val1000 >> lengthExtractSafe;
+	if (std::count(value1000.begin(), value1000.end(), '.')
+		!= 0 && lengthExtractSafe > 1000)
+		return TOO_HIGH_NUM;
+	std::cout << "asdasd " << lengthExtractSafe << std::endl;
+	
+	// std::cout << "extracted value ==> " <<value1000   << std::endl;
+	
+	// if (value.size() >= 4) {
+	// 	value1000 = value
+	// 	std::stringstream	check1000()
+	// }
+	std::cout << date << " | " << value << std::endl;
+	return OK;
+}
+
+void	Btc::verifyLine(std::string const &line) {
+	switch (checkLineForSwitch(line)) {
+		case BAD_INPUT:
+			std::cout << "Error: bad input =>" << line << std::endl;
+			break;
+		case NOT_NUM:
+			std::cout << "Error: bad input =>" << line << std::endl;
+			break;
+		case NEGATIVE_NUM:
+			std::cout << "Error: not a positive number." << std::endl;
+			break;
+		case TOO_HIGH_NUM:
+			std::cout << "Error: too large a number." << std::endl;
+			break;
+		default:
+			break;
+	}
 }

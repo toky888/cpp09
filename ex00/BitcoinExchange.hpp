@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:20 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/20 18:42:40 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/21 16:50:49 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,15 @@
 # include <fstream>
 # include <sstream>
 # include <algorithm> 
+# include <cstdlib>
 typedef std::map<std::string, double>	mapSD;
+enum e_error {
+	OK,
+	BAD_INPUT,
+	NOT_NUM,
+	NEGATIVE_NUM,
+	TOO_HIGH_NUM
+};
 
 class Btc{
 private:
@@ -40,6 +48,8 @@ public:
 	static void		putIntoMapInput(std::ifstream &input, mapSD &inputMap);
 	static void		verifyInputHeader(std::string const & head);
 	static void		trim_char(std::string& s, char c);
+	static bool		isDouble(std::string const &s);
+	static e_error	checkLineForSwitch(std::string const &line);
 	static void		verifyLine(std::string const &line);
 };
 
