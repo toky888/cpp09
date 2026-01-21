@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/21 17:42:05 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/21 18:52:29 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,12 +120,31 @@ bool Btc::isDouble(std::string const &s) {
 	return (check == 0 && end == str.c_str() + str.size()); 
 }
 
+static void	trim_charBefore(std::string& s, char c)
+{
+    while (!s.empty() && s[0] == c)
+        s.erase(0, 1);
+}
+
+static bool	cleanValue(std::string &value) {
+	int			lengthExtractSafe;
+	std::string	value1000;
+	
+	trim_charBefore(value, '+');
+	trim_charBefore(value, '0');
+	lengthExtractSafe = std::min(4, static_cast<int>(value.length()));
+	value1000 = value.substr(0, lengthExtractSafe);
+	std::stringstream	val1000(value1000);
+	val1000 >> lengthExtractSafe;
+	if (lengthExtractSafe > 1000)
+		return true;
+	return false;
+}
+
 e_error	Btc::checkLineForSwitch(std::string const &line) {
 	std::stringstream	rawLine(line);
 	std::string			date;
 	std::string			value;
-	std::string			value1000;
-	int					lengthExtractSafe;
 
 	//--------------***HANDLE '|' ***-------------
 
@@ -143,14 +162,9 @@ e_error	Btc::checkLineForSwitch(std::string const &line) {
 	if (value[0] == '-')
 		return NEGATIVE_NUM;
 	//HANDLE 1000
-	lengthExtractSafe = std::min(4, static_cast<int>(value.length()));
-	value1000 = value.substr(0, lengthExtractSafe);
-	std::stringstream	val1000(value1000);
-	val1000 >> lengthExtractSafe;
-	if (std::count(value1000.begin(), value1000.end(), '.')
-		!= 0 && lengthExtractSafe > 1000)
+	if (cleanValue(value))
 		return TOO_HIGH_NUM;
-	std::cout << "asdasd " << lengthExtractSafe << std::endl;
+	// std::cout << "asdasd " << lengthExtractSafe << std::endl;
 	
 	// std::cout << "extracted value ==> " <<value1000   << std::endl;
 	
