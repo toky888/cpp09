@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/21 18:52:29 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 14:07:57 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,9 +62,6 @@ void Btc::putIntoMapInput(std::ifstream &input, mapSD &inputMap) {
 	while (getline(input, rawLine)) {
 		Btc::verifyLine(rawLine);
 	}
-	
-	
-	
 	inputMap.insert(std::make_pair("ads", 77)); // Just to test cause i can t do = void
 }
 
@@ -85,23 +82,16 @@ void	Btc::verifyInputHeader(std::string const &head) {
 	std::getline(headStream, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
-
 	if (date != "date" || value != "value") {
 		std::cout << "Error: bad header input =>" << head << std::endl;
 		return ;
 	}
-	
-		
-	// std::cout << "THI IS A TEST " 
-	// 	<< date << "|" << value  << std::endl;
-	
 }
 
 void	Btc::trim_char(std::string& s, char c)
 {
     while (!s.empty() && s[0] == c)
         s.erase(0, 1);
-
     while (!s.empty() && s[s.size() - 1] == c)
         s.erase(s.size() - 1, 1);
 }
@@ -126,7 +116,7 @@ static void	trim_charBefore(std::string& s, char c)
         s.erase(0, 1);
 }
 
-static bool	cleanValue(std::string &value) {
+static bool	cleanCheckValue(std::string &value) {
 	int			lengthExtractSafe;
 	std::string	value1000;
 	
@@ -141,38 +131,48 @@ static bool	cleanValue(std::string &value) {
 	return false;
 }
 
+static bool	cleanCheckDate(std::string &date) {
+	std::tm tm = {};
+	std::tm original = {};
+	char*	end;
+	
+	end = NULL;
+	Btc::trim_char(date, ' ');
+	Btc::trim_char(date, '\t');
+	end = strptime(date.c_str(), "%Y-%m-%d", &tm);
+	original = tm;
+	if (!end || *end != '\0')
+		return false;
+	if (mktime(&tm) == -1)
+		return false;
+	tm.tm_isdst = -1;
+	if (tm.tm_year != original.tm_year
+		|| tm.tm_mon != original.tm_mon
+		|| tm.tm_mday !=  original.tm_mday)
+		return false;
+	return true;
+}
+
 e_error	Btc::checkLineForSwitch(std::string const &line) {
 	std::stringstream	rawLine(line);
 	std::string			date;
 	std::string			value;
-
-	//--------------***HANDLE '|' ***-------------
-
+	
 	if ((std::count(line.begin(), line.end(), '|') != 1))
 		return BAD_INPUT;
 	std::getline(rawLine, date, '|');
 	std::getline(rawLine, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
-	
-	//--------------***HANDLE VALUE ***-------------
-	//HANDLE NON NUM VALUE AND NEGATIVE
+	if (!cleanCheckDate(date))
+		return BAD_INPUT;
 	if (!Btc::isDouble(value))
 		return NOT_NUM;
 	if (value[0] == '-')
 		return NEGATIVE_NUM;
-	//HANDLE 1000
-	if (cleanValue(value))
+	if (cleanCheckValue(value))
 		return TOO_HIGH_NUM;
-	// std::cout << "asdasd " << lengthExtractSafe << std::endl;
-	
-	// std::cout << "extracted value ==> " <<value1000   << std::endl;
-	
-	// if (value.size() >= 4) {
-	// 	value1000 = value
-	// 	std::stringstream	check1000()
-	// }
-	std::cout << date << " | " << value << std::endl;
+	std::cout << date << " | " << value << std::endl; // for testing error parsing value
 	return OK;
 }
 

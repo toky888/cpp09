@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:20 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/21 16:50:49 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 13:34:12 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <sstream>
 # include <algorithm> 
 # include <cstdlib>
+# include <ctime>
 typedef std::map<std::string, double>	mapSD;
 enum e_error {
 	OK,
