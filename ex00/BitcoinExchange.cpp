@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 17:26:05 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 17:31:22 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Btc::Btc(std::string const &input) {
 	if (!this->_input)
 		throw(std::logic_error
 			(input + " file not found in the current directory."));
-	this->putIntoMapInput(this->_input, this->_inputMap);
+	this->putIntoMapInput(this->_input);
 	this->_data.close();
 	this->_input.close();
 }
@@ -53,7 +53,7 @@ void Btc::putIntoMap(std::ifstream &data, mapSD &dataMap) {
     }
 }
 
-void Btc::putIntoMapInput(std::ifstream &input, mapSD &inputMap) {
+void Btc::putIntoMapInput(std::ifstream &input) {
 	std::string	header;
 	std::string	rawLine;
 	
@@ -62,16 +62,12 @@ void Btc::putIntoMapInput(std::ifstream &input, mapSD &inputMap) {
 	while (getline(input, rawLine)) {
 		if (rawLine.empty())
 			continue;
-		this->verifyLineNPrint(rawLine, inputMap);
+		this->verifyLineNPrint(rawLine);
 	}
 }
 
 mapSD Btc::getDataMap() const {
 	return this->_dataMap;
-}
-
-mapSD Btc::getInputMap() const {
-	return this->_inputMap;
 }
 
 void	Btc::verifyInputHeader(std::string const &head) {
@@ -115,8 +111,7 @@ bool Btc::isDouble(std::string const &s) {
 	return (check == 0 && end == str.c_str() + str.size()); 
 }
 
-static void	trim_charBefore(std::string& s, char c)
-{
+static void	trim_charBefore(std::string& s, char c) {
     while (!s.empty() && s[0] == c)
         s.erase(0, 1);
 }
@@ -160,15 +155,16 @@ static bool	cleanCheckDate(std::string &date) {
 	return true;
 }
 
-static void	cleanRawLine(std::stringstream	&rawLine, std::string &date, std::string &value) {
+static void	cleanRawLine(std::stringstream	&rawLine, 
+	std::string &date, std::string &value)
+{
 	std::getline(rawLine, date, '|');
 	std::getline(rawLine, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
 }
 
-e_error	Btc::checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap) {
-	
+e_error	Btc::checkLineForSwitchNPrint(std::string const &line) {
 	std::stringstream	rawLine(line);
 	std::string			value;
 	
@@ -186,24 +182,25 @@ e_error	Btc::checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap) 
 	std::stringstream	valued(value);
 	
 	valued >> this->_valueImput;
-	inputMap.insert(std::make_pair(this->_dateInput, this->_valueImput)); // to delete
 	return OK;
 }
 
 static void	printTrend(mapSD const &data,
-	std::string const &date, double const &value) {
+	std::string const &date, double const &value)
+{
 	mapSD::const_iterator	it = data.upper_bound(date);
 	
 	if (it == data.begin() || it == data.end())
 		std::cout << "Error: input date not in database!" << std::endl;
 	else {
 		--it;
-		std::cout << date << " => " << value << " = " <<  value * (it->second) << std::endl;
+		std::cout << date << " => " << value << " = "
+			<<  value * (it->second) << std::endl;
 	}
 }
 
-void	Btc::verifyLineNPrint(std::string const &line, mapSD &inputMap) {
-	switch (this->checkLineForSwitchNPrint(line, inputMap)) {
+void	Btc::verifyLineNPrint(std::string const &line) {
+	switch (this->checkLineForSwitchNPrint(line)) {
 		case BAD_INPUT:
 			std::cout << "Error: bad input =>" << line << std::endl;
 			break;

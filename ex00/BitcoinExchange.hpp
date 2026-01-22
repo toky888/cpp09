@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:20 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 17:26:15 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 17:28:44 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,6 @@ private:
 	std::ifstream	_data;
 	std::ifstream	_input;
 	mapSD			_dataMap;
-	mapSD			_inputMap;
 	std::string		_dateInput;
 	double			_valueImput;
 	Btc(Btc const &src);
@@ -47,14 +46,13 @@ public:
 	~Btc();
 	
 	mapSD			getDataMap() const;
-	mapSD			getInputMap() const;
-	void			putIntoMapInput(std::ifstream &input, mapSD &inputMap);
+	void			putIntoMapInput(std::ifstream &input);
 	static void		putIntoMap(std::ifstream &data, mapSD &dataMap);
 	static void		verifyInputHeader(std::string const & head);
 	static void		trim_char(std::string& s, char c);
 	static bool		isDouble(std::string const &s);
-	e_error	checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap);
-	void			verifyLineNPrint(std::string const &line, mapSD &inputMap);
+	e_error	checkLineForSwitchNPrint(std::string const &line);
+	void			verifyLineNPrint(std::string const &line);
 };
 
 #endif
