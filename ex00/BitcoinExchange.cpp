@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 15:51:35 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 17:26:05 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,12 @@ Btc::Btc(std::string const &input) {
 	if (!this->_data)
 		throw(std::logic_error
 			("\"data.csv\" file not found in the current directory."));
-	Btc::putIntoMap(this->_data, this->_dataMap);
+	this->putIntoMap(this->_data, this->_dataMap);
 	this->_input.open(input.c_str());
 	if (!this->_input)
 		throw(std::logic_error
 			(input + " file not found in the current directory."));
-	Btc::putIntoMapInput(this->_input, this->_inputMap);
+	this->putIntoMapInput(this->_input, this->_inputMap);
 	this->_data.close();
 	this->_input.close();
 }
@@ -60,9 +60,10 @@ void Btc::putIntoMapInput(std::ifstream &input, mapSD &inputMap) {
 	std::getline(input, header);
 	Btc::verifyInputHeader(header);
 	while (getline(input, rawLine)) {
-		Btc::verifyLineNPrint(rawLine, inputMap);
+		if (rawLine.empty())
+			continue;
+		this->verifyLineNPrint(rawLine, inputMap);
 	}
-	 // Just to test cause i can t do = void
 }
 
 mapSD Btc::getDataMap() const {
@@ -126,6 +127,8 @@ static bool	cleanCheckValue(std::string &value) {
 	
 	trim_charBefore(value, '+');
 	trim_charBefore(value, '0');
+	if (value.empty())
+		value = "0";
 	lengthExtractSafe = std::min(4, static_cast<int>(value.length()));
 	value1000 = value.substr(0, lengthExtractSafe);
 	std::stringstream	val1000(value1000);
@@ -167,14 +170,12 @@ static void	cleanRawLine(std::stringstream	&rawLine, std::string &date, std::str
 e_error	Btc::checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap) {
 	
 	std::stringstream	rawLine(line);
-	std::string			date;
 	std::string			value;
-	double				valuedd;
 	
 	if ((std::count(line.begin(), line.end(), '|') != 1))
 		return BAD_INPUT;
-	cleanRawLine(rawLine, date, value);
-	if (!cleanCheckDate(date))
+	cleanRawLine(rawLine, this->_dateInput, value);
+	if (!cleanCheckDate(this->_dateInput))
 		return BAD_INPUT;
 	if (!Btc::isDouble(value))
 		return NOT_NUM;
@@ -184,13 +185,25 @@ e_error	Btc::checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap) 
 		return TOO_HIGH_NUM;
 	std::stringstream	valued(value);
 	
-	valued >> valuedd;
-	inputMap.insert(std::make_pair(date, valuedd));
+	valued >> this->_valueImput;
+	inputMap.insert(std::make_pair(this->_dateInput, this->_valueImput)); // to delete
 	return OK;
 }
 
+static void	printTrend(mapSD const &data,
+	std::string const &date, double const &value) {
+	mapSD::const_iterator	it = data.upper_bound(date);
+	
+	if (it == data.begin() || it == data.end())
+		std::cout << "Error: input date not in database!" << std::endl;
+	else {
+		--it;
+		std::cout << date << " => " << value << " = " <<  value * (it->second) << std::endl;
+	}
+}
+
 void	Btc::verifyLineNPrint(std::string const &line, mapSD &inputMap) {
-	switch (checkLineForSwitchNPrint(line, inputMap)) {
+	switch (this->checkLineForSwitchNPrint(line, inputMap)) {
 		case BAD_INPUT:
 			std::cout << "Error: bad input =>" << line << std::endl;
 			break;
@@ -204,7 +217,7 @@ void	Btc::verifyLineNPrint(std::string const &line, mapSD &inputMap) {
 			std::cout << "Error: too large a number." << std::endl;
 			break;
 		default:
-			
+			printTrend(this->_dataMap, this->_dateInput, this->_valueImput);
 			break;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:20 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 15:51:13 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 17:26:15 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,13 @@ public:
 	
 	mapSD			getDataMap() const;
 	mapSD			getInputMap() const;
+	void			putIntoMapInput(std::ifstream &input, mapSD &inputMap);
 	static void		putIntoMap(std::ifstream &data, mapSD &dataMap);
-	static void		putIntoMapInput(std::ifstream &input, mapSD &inputMap);
 	static void		verifyInputHeader(std::string const & head);
 	static void		trim_char(std::string& s, char c);
 	static bool		isDouble(std::string const &s);
-	static e_error	checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap);
-	static void		verifyLineNPrint(std::string const &line, mapSD &inputMap);
+	e_error	checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap);
+	void			verifyLineNPrint(std::string const &line, mapSD &inputMap);
 };
 
 #endif
