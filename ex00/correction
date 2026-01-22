@@ -1,4 +1,0 @@
-in BitcoinExchange.hpp & cpp :
-in function : "Btc::putIntoMapInput(this->_input, this->_inputmap);"
-	remove "this->_inputmap" aparameter
-	move this parameter to "e_error	Btc::checkLineForSwitch(std::string const &line)"

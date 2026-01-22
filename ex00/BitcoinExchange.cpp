@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 14:07:57 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/22 15:51:35 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ Btc::Btc(std::string const &input) {
 	if (!this->_input)
 		throw(std::logic_error
 			(input + " file not found in the current directory."));
-	Btc::putIntoMapInput(this->_input, this->_inputmap);
+	Btc::putIntoMapInput(this->_input, this->_inputMap);
 	this->_data.close();
 	this->_input.close();
 }
@@ -60,13 +60,17 @@ void Btc::putIntoMapInput(std::ifstream &input, mapSD &inputMap) {
 	std::getline(input, header);
 	Btc::verifyInputHeader(header);
 	while (getline(input, rawLine)) {
-		Btc::verifyLine(rawLine);
+		Btc::verifyLineNPrint(rawLine, inputMap);
 	}
-	inputMap.insert(std::make_pair("ads", 77)); // Just to test cause i can t do = void
+	 // Just to test cause i can t do = void
 }
 
 mapSD Btc::getDataMap() const {
 	return this->_dataMap;
+}
+
+mapSD Btc::getInputMap() const {
+	return this->_inputMap;
 }
 
 void	Btc::verifyInputHeader(std::string const &head) {
@@ -153,17 +157,23 @@ static bool	cleanCheckDate(std::string &date) {
 	return true;
 }
 
-e_error	Btc::checkLineForSwitch(std::string const &line) {
-	std::stringstream	rawLine(line);
-	std::string			date;
-	std::string			value;
-	
-	if ((std::count(line.begin(), line.end(), '|') != 1))
-		return BAD_INPUT;
+static void	cleanRawLine(std::stringstream	&rawLine, std::string &date, std::string &value) {
 	std::getline(rawLine, date, '|');
 	std::getline(rawLine, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
+}
+
+e_error	Btc::checkLineForSwitchNPrint(std::string const &line, mapSD &inputMap) {
+	
+	std::stringstream	rawLine(line);
+	std::string			date;
+	std::string			value;
+	double				valuedd;
+	
+	if ((std::count(line.begin(), line.end(), '|') != 1))
+		return BAD_INPUT;
+	cleanRawLine(rawLine, date, value);
 	if (!cleanCheckDate(date))
 		return BAD_INPUT;
 	if (!Btc::isDouble(value))
@@ -172,12 +182,15 @@ e_error	Btc::checkLineForSwitch(std::string const &line) {
 		return NEGATIVE_NUM;
 	if (cleanCheckValue(value))
 		return TOO_HIGH_NUM;
-	std::cout << date << " | " << value << std::endl; // for testing error parsing value
+	std::stringstream	valued(value);
+	
+	valued >> valuedd;
+	inputMap.insert(std::make_pair(date, valuedd));
 	return OK;
 }
 
-void	Btc::verifyLine(std::string const &line) {
-	switch (checkLineForSwitch(line)) {
+void	Btc::verifyLineNPrint(std::string const &line, mapSD &inputMap) {
+	switch (checkLineForSwitchNPrint(line, inputMap)) {
 		case BAD_INPUT:
 			std::cout << "Error: bad input =>" << line << std::endl;
 			break;
@@ -191,6 +204,7 @@ void	Btc::verifyLine(std::string const &line) {
 			std::cout << "Error: too large a number." << std::endl;
 			break;
 		default:
+			
 			break;
 	}
 }
