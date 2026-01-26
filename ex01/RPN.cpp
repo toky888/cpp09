@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 15:18:58 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/26 16:54:09 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/26 16:58:54 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ RPN::RPN(std::string input) : _result(0) {
 }
 
 RPN::~RPN() {}
-
 
 static void
 addStack(std::string const &opr, std::stack<double> &pile) {
