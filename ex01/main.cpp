@@ -6,13 +6,14 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 15:17:11 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/23 18:20:35 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/26 16:21:36 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "RNP.hpp"
 
-bool	validchar(std::string const &av) {
+bool
+validchar(std::string const &av) {
 	size_t		firstPos;
 	std::string	allowedChar;
 
@@ -21,7 +22,8 @@ bool	validchar(std::string const &av) {
 	return firstPos == std::string::npos;
 }
 
-bool	isSpaceBetween(std::string const &av) {
+bool
+isSpaceBetween(std::string const &av) {
 	std::string::const_iterator it = av.begin();
 	for (; it != av.end(); ++it) {
 		if (*it != ' ' && *it != '\t') {
@@ -29,18 +31,18 @@ bool	isSpaceBetween(std::string const &av) {
 				break;
 			if (*it != ' ' && *it != '\t')
 				return false;
-		
 		}
 	}
 	return true;
 }
 
-void checkError(std::string av) {
-	std::cout <<  av  << std::endl;
+void
+checkError(std::string av) {
+	// std::cout <<  av  << std::endl;
 	if(!validchar(av))
 		throw (std::runtime_error("\033[31mError\033[0m"));
 	if (!isSpaceBetween(av))
-		throw (std::runtime_error("\033[31mError\033[0m: need space between operands and operators"));
+		throw (std::runtime_error("\033[31mError\033[0m: need space between operands and operators. Operands < 10"));
 }
 
 int	main(int ac, char **av) {
@@ -48,6 +50,10 @@ int	main(int ac, char **av) {
 		if (ac != 2)
 			throw (std::runtime_error("\033[31mError:\033[0m use => ./RNP \"[arguments]\""));
 		checkError(av[1]);
+		RNP rnp(av[1]);
+		
+		rnp.calculRNP();
+		std::cout << rnp.getResult() << std::endl;
 	}
 	catch(const std::exception& e) {
 		std::cerr << e.what() << '\n';
