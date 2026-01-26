@@ -6,7 +6,7 @@
 #    By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/07 14:28:55 by tmory             #+#    #+#              #
-#    Updated: 2026/01/23 17:14:34 by tmory            ###   ########.fr        #
+#    Updated: 2026/01/26 16:28:38 by tmory            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,25 +15,25 @@ CPPFLAG = -Wall -Wextra -Werror -std=c++98 -g
 CPPNOFLAG = -Wall -Wextra -Werror
 MAKE = make
 MAKECLEAN = make clean
-NAMENOFLG = RNP_noStd
+NAMENOFLG = RPN_noStd
 RM = rm
-SRC = main.cpp RNP.cpp\
+SRC = main.cpp RPN.cpp\
 
 OBJ_DIR  = obj
 OBJ_DIR_NFLG  = obj_nofl
 OBJ = $(addprefix $(OBJ_DIR)/,$(SRC:%.cpp=%.o))
 OBJNFLG = $(addprefix $(OBJ_DIR_NFLG)/,$(SRC:%.cpp=%.o))
-LIBRARY = RNP_lib.a
-NAME = RNP
+LIBRARY = RPN_lib.a
+NAME = RPN
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
 	@ar -rcs $(LIBRARY) $(OBJ)
 	@echo "\033[0m"
-	@echo "library RNP_lib.a created"
+	@echo "library RPN_lib.a created"
 	$(CPP) $(CPPFLAG) $(LIBRARY) -o $(NAME)
-	@echo "\033[90m[\033[32;1;5mSuccess\033[0m\033[90m]\033[32m Program 'RNP' successfully compiled.\033[0m"
+	@echo "\033[90m[\033[32;1;5mSuccess\033[0m\033[90m]\033[32m Program 'RPN' successfully compiled.\033[0m"
 
 $(OBJ_DIR)/%.o: %.cpp
 	@mkdir -p $(OBJ_DIR)
@@ -56,9 +56,9 @@ noflag: $(NAMENOFLG)
 $(NAMENOFLG): $(OBJNFLG)
 	@ar -rcs $(LIBRARY) $(OBJNFLG)
 	@echo "\033[0m"
-	@echo "library RNP_lib.a created"
+	@echo "library RPN_lib.a created"
 	$(CPP) $(CPPNOFLAG) $(LIBRARY) -o $(NAMENOFLG)
-	@echo "\033[90m[\033[32;1;5mSuccess\033[0m\033[90m]\033[32m Program 'RNP_noStd' successfully compiled.\033[0m"
+	@echo "\033[90m[\033[32;1;5mSuccess\033[0m\033[90m]\033[32m Program 'RPN_noStd' successfully compiled.\033[0m"
 
 $(OBJ_DIR_NFLG)/%.o: %.cpp
 	@mkdir -p $(OBJ_DIR_NFLG)

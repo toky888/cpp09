@@ -6,30 +6,30 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 15:18:04 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/26 16:20:17 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/26 16:29:18 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RNP_HPP
-# define RNP_HPP
+#ifndef RPN_HPP
+# define RPN_HPP
 # include <iostream>
 # include <string>
 # include <algorithm>
 # include <stack>
 # include <sstream>
 
-class RNP {
+class RPN {
 private:
 	std::stack<double> 	_pile;
 	std::stringstream	_input;
 	double				_result;
-	RNP();
-	RNP(RNP const &src);
-	RNP					&operator=(RNP const &rhs);
+	RPN();
+	RPN(RPN const &src);
+	RPN					&operator=(RPN const &rhs);
 public:
-	RNP(std::string input);
-	~RNP();
-	void				calculRNP();
+	RPN(std::string input);
+	~RPN();
+	void				calculRPN();
 	double				getResult() const;
 };
 

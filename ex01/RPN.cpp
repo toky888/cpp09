@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   RNP.cpp                                            :+:      :+:    :+:   */
+/*   RPN.cpp                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 15:18:58 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/26 16:20:58 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/26 16:54:09 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RNP.hpp"
+#include "RPN.hpp"
 
 static void
 trim_char(std::string& s, char c)
@@ -21,13 +21,13 @@ trim_char(std::string& s, char c)
         s.erase(s.size() - 1, 1);
 }
 
-RNP::RNP(std::string input) : _result(0) {
+RPN::RPN(std::string input) : _result(0) {
 	trim_char(input, ' ');
 	trim_char(input, '\t');
 	this->_input << input;
 }
 
-RNP::~RNP() {}
+RPN::~RPN() {}
 
 
 static void
@@ -68,28 +68,27 @@ twoLastOperandOperation(std::stack<double> &pile, char op) {
 }
 
 void
-RNP::calculRNP() {
+RPN::calculRPN() {
 	std::string	opr;
 	std::string	operators;
 	
-	while (getline(this->_input, opr, ' ')) {
-		std::cout << opr  << std::endl;
-		
+	while (std::getline(this->_input, opr, ' ')) {
+		if (opr == "")
+			continue;
 		if (std::isdigit(opr[0]))
 			addStack(opr, this->_pile);
 		else {
 			if (this->_pile.empty() || this->_pile.size() == 1)
-				throw (std::runtime_error("Error XX"));
+				throw (std::runtime_error("\033[31mError\033[0m"));
 			twoLastOperandOperation(this->_pile, opr[0]);
 		}
 	}
-	//verify if _pile.size() != 1
 	if (this->_pile.size() != 1)
-		throw (std::runtime_error("ErrorYY"));
+		throw (std::runtime_error("\033[31mError\033[0m"));
 	this->_result = this->_pile.top();
 }
 
 double
-RNP::getResult() const {
+RPN::getResult() const {
 	return this->_result;
 }

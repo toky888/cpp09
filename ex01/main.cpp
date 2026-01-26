@@ -6,11 +6,11 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/23 15:17:11 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/26 16:21:36 by tmory            ###   ########.fr       */
+/*   Updated: 2026/01/26 16:29:18 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "RNP.hpp"
+#include "RPN.hpp"
 
 bool
 validchar(std::string const &av) {
@@ -48,12 +48,12 @@ checkError(std::string av) {
 int	main(int ac, char **av) {
 	try {
 		if (ac != 2)
-			throw (std::runtime_error("\033[31mError:\033[0m use => ./RNP \"[arguments]\""));
+			throw (std::runtime_error("\033[31mError:\033[0m use => ./RPN \"[arguments]\""));
 		checkError(av[1]);
-		RNP rnp(av[1]);
+		RPN rpn(av[1]);
 		
-		rnp.calculRNP();
-		std::cout << rnp.getResult() << std::endl;
+		rpn.calculRPN();
+		std::cout << rpn.getResult() << std::endl;
 	}
 	catch(const std::exception& e) {
 		std::cerr << e.what() << '\n';
