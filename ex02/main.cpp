@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/01 16:49:28 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 09:15:53 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ printP(T const &cont) {
 	}
 	
 }
+
 std::vector<size_t>
 buildJacobsthalOrder(size_t n)
 {
@@ -109,8 +110,8 @@ int main(int ac, char ** av) {
 	}
 	if (!checkInput(raw, tmp))
 		return (std::cerr << "Error" << std::endl, 1);
-	mergeInsertionAlgo.pair(raw);
-	printP(mergeInsertionAlgo.getPair());
+
+		
 	printC(buildJacobsthalOrder(4));
 	// printC(buildJacobsthalOrder(3));
 	// printC(buildJacobsthalOrder(1000));

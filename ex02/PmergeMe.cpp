@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:34:40 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/01 13:32:44 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 09:15:33 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,7 @@ PmergeMe::PmergeMe() {}
 
 PmergeMe::~PmergeMe() {}
 
-vec_pair
+vec_int
 PmergeMe::getPair() const {
 	return this->_pairVector;
-}
-
-void
-PmergeMe::pair(vec_int const &input) {
-	vec_int::const_iterator	it = input.begin();
-
-	for (; it != input.end(); ++it) {
-		if (it + 1 == input.end())
-			this->_pairVector.push_back(std::make_pair(*it, NO_PAIR));
-		else {
-			if (*it > *(it + 1))
-				this->_pairVector.push_back(std::make_pair(*it, *(it + 1)));
-			else
-				this->_pairVector.push_back(std::make_pair(*(it + 1), *it));
-			++it;
-		}	
-	}
-	// if (this->_pairVector.empty())
-	// 	std::cout << "THI IS A TEST"  << std::endl;
 }
