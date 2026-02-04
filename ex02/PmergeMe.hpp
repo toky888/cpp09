@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/04 13:16:10 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 17:07:12 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,8 @@ public:
 	~PmergeMe();
 	void	setInput(vec_int input);
 	vec_int	getPair() const;
-	static void	fordJohnson(vec_int &bigPair);
+	static vec_int generateIndex(vec_int const &array);
+	static void	fordJohnson(vec_int &chain, vec_int index);
 };
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/04 13:17:02 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 17:08:05 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ buildJacobsthalOrder(size_t n)
     if (n <= 1)
         return order;
 
-    // Step 1 — Build Jacobsthal limits: 1, 3, 5, 11, 21, ...
     std::vector<size_t> t;
     t.push_back(1);
     t.push_back(3);
@@ -123,8 +122,11 @@ int main(int ac, char ** av) {
 	std::cout << "---------------------------" << std::endl;
 	printP(mergeInsertionAlgo.getPair());
 	std::cout << "---------------------------" << std::endl;
+	
+	printC(PmergeMe::generateIndex(raw));
+	std::cout << "---------------------------" << std::endl;
 	raw = mergeInsertionAlgo.getPair();
-	PmergeMe::fordJohnson(raw);
+	PmergeMe::fordJohnson(raw, PmergeMe::generateIndex(raw));
 	// printC(buildJacobsthalOrder(3));
 	// printC(buildJacobsthalOrder(1000));
 	// if (!raw.empty())

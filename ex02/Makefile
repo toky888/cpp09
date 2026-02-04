@@ -6,13 +6,13 @@
 #    By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/07 14:28:55 by tmory             #+#    #+#              #
-#    Updated: 2026/01/26 17:22:21 by tmory            ###   ########.fr        #
+#    Updated: 2026/02/04 17:15:19 by tmory            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CPP = c++
 CPPFLAG = -Wall -Wextra -Werror -std=c++98 -g
-CPPNOFLAG = -Wall -Wextra -Werror
+CPPNOFLAG = -std=c++98 -g
 MAKE = make
 MAKECLEAN = make clean
 NAMENOFLG = PmergeMe_noStd
