@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/04 09:15:03 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 13:16:10 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,23 +16,29 @@
 # include <string>
 # include <vector>
 # include <sstream>
-# define NO_PAIR -1
+# define NO_LEFTOVER -1;
 
 typedef std::vector<int> vec_int;
+typedef struct	s_pair{
+	vec_int	bigPair;
+	vec_int	smallPair;
+	int		leftOver;
+} t_pair;
 // typedef std::vector<std::pair<int, int> > vec_pair;
 
 class PmergeMe
 {
 private:
-	vec_int	_pairVector;
+	vec_int			_input;
 private:
 	PmergeMe(PmergeMe const &src);
 	PmergeMe &operator=(PmergeMe const &rhs);
 public:
 	PmergeMe();
 	~PmergeMe();
-	vec_int	getPair()const;
-	
+	void	setInput(vec_int input);
+	vec_int	getPair() const;
+	static void	fordJohnson(vec_int &bigPair);
 };
 
 #endif

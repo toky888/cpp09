@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/04 09:15:53 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/04 13:17:02 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,9 @@ static void
 printC(T cont) {
 	typename T::iterator it = cont.begin();
 	for (; it != cont.end(); ++it) {
-		std::cout << *it << " " << std::endl;
+		std::cout << *it << ",";
 	}
+	std::cout << std::endl;
 }
 
 template <typename T>
@@ -26,7 +27,14 @@ static void
 printP(T const &cont) {
 	typename T::const_iterator it = cont.begin();
 	for (; it != cont.end(); ++it) {
-		std::cout << it->first << ":" << it->second << std::endl;
+		std::cout << *it << ":";
+		if (it + 1 != cont.end()) {
+			std::cout << *(it + 1) << std::endl;
+			++it;	
+		}	
+		else
+			std::cout << -1 << std::endl;
+			
 	}
 	
 }
@@ -110,9 +118,13 @@ int main(int ac, char ** av) {
 	}
 	if (!checkInput(raw, tmp))
 		return (std::cerr << "Error" << std::endl, 1);
-
-		
-	printC(buildJacobsthalOrder(4));
+	mergeInsertionAlgo.setInput(raw);
+	printC(buildJacobsthalOrder(mergeInsertionAlgo.getPair().size()));
+	std::cout << "---------------------------" << std::endl;
+	printP(mergeInsertionAlgo.getPair());
+	std::cout << "---------------------------" << std::endl;
+	raw = mergeInsertionAlgo.getPair();
+	PmergeMe::fordJohnson(raw);
 	// printC(buildJacobsthalOrder(3));
 	// printC(buildJacobsthalOrder(1000));
 	// if (!raw.empty())
