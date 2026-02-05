@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/04 17:08:05 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/05 11:02:03 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,10 +123,12 @@ int main(int ac, char ** av) {
 	printP(mergeInsertionAlgo.getPair());
 	std::cout << "---------------------------" << std::endl;
 	
-	printC(PmergeMe::generateIndex(raw));
+	printC(PmergeMe::generateIndex(raw.size() / 2));
 	std::cout << "---------------------------" << std::endl;
 	raw = mergeInsertionAlgo.getPair();
-	PmergeMe::fordJohnson(raw, PmergeMe::generateIndex(raw));
+	std::cout << "size of raw/2 = " <<raw.size() / 2 << std::endl;
+	
+	PmergeMe::fordJohnson(raw, PmergeMe::generateIndex(raw.size()));
 	// printC(buildJacobsthalOrder(3));
 	// printC(buildJacobsthalOrder(1000));
 	// if (!raw.empty())
