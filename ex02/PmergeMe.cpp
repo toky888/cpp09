@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:34:40 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/05 11:59:37 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/05 15:01:12 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,8 @@ void PmergeMe::fordJohnson(vec_int &chain, vec_int index) {
 	oldBigPair = pairs.bigPair;
 	indexOP = PmergeMe::generateIndex(oldBigPair.size());
 	std::cout << "----------------" << std::endl;
-	PmergeMe::fordJohnson(pairs.bigPair, indexOP);
 	
-
+	PmergeMe::fordJohnson(pairs.bigPair, indexOP);// FORDJ RECURSION
 	std::cout << "level " << level  << std::endl;
 	
 	newchain = pairs.bigPair;
@@ -104,7 +103,7 @@ void PmergeMe::fordJohnson(vec_int &chain, vec_int index) {
 	vec_int::iterator it = std::lower_bound(newchain.begin(),
 	newchain.end(), pairs.smallPair[0]); // now change the "newchain.end()" to the index of index[0] of smallPair
 	if (it == newchain.end())
-	std::cout << "NOOOOOOOOOOO" << std::endl;
+		std::cout << "NOOOOOOOOOOO" << std::endl;
 	std::cout << "it of lower_bound = " <<  *it  << " for " << pairs.smallPair[0]<< std::endl;
 	newchain.insert(it, pairs.smallPair[0]);
 	
@@ -119,4 +118,9 @@ void PmergeMe::fordJohnson(vec_int &chain, vec_int index) {
 	// insertion(pairs.bigPair, pairs.smallPair);
 	return ;
 }
+
+// void PmergeMe::fordJohnson() {
+	
+// 	return ;
+// }
 
