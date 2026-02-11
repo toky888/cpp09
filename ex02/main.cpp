@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/11 18:50:54 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/12 01:26:35 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,31 @@ checkInput(std::vector<int> &raw, std::stringstream &tmp) {
 	return true;
 }
 
+void
+push_back_toPair(vec_pair &arrayP, vec_int const & array)
+{
+	vec_int::const_iterator	it = array.begin();
+	vec_int					tmp;
+	
+	for (; it != array.end(); ++it) {
+		tmp.push_back(*it);
+		arrayP.push_back(tmp);
+		tmp.clear();
+	}
+	
+}
+
+bool
+FJSuitData(vec_int const &array, PmergeMe &pmerge) {
+	vec_pair				arrayP;
+	
+	if(array.empty())
+		return false; 
+	push_back_toPair(arrayP, array);
+	pmerge.setChain(arrayP);
+	return true;
+}
+
 int main(int ac, char ** av) {
 	vec_int				raw;
 	vec_pair			pair;
@@ -101,9 +126,12 @@ int main(int ac, char ** av) {
 	PmergeMe::printC(raw);
 	std::cout << "pmerge raw suite :" << std::endl;
 	PmergeMe::printC(pmerge.getRaw());
-
-	PmergeMe::fordJohnson(raw);
-
+	std::cout << "---------------------------" << std::endl;
 	
+	if (!FJSuitData(raw, pmerge))
+		return 1;
+	std::cout << "pair suite :" << std::endl;
+	PmergeMe::printP<vec_pair, vec_int>(pmerge.getChain());
+	pmerge.fordJohnson();
 	return 0;
 }
