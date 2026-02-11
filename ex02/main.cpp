@@ -6,38 +6,13 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/05 11:02:03 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/11 18:50:54 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "PmergeMe.hpp"
 
-template <typename T>
-static void
-printC(T cont) {
-	typename T::iterator it = cont.begin();
-	for (; it != cont.end(); ++it) {
-		std::cout << *it << ",";
-	}
-	std::cout << std::endl;
-}
 
-template <typename T>
-static void
-printP(T const &cont) {
-	typename T::const_iterator it = cont.begin();
-	for (; it != cont.end(); ++it) {
-		std::cout << *it << ":";
-		if (it + 1 != cont.end()) {
-			std::cout << *(it + 1) << std::endl;
-			++it;	
-		}	
-		else
-			std::cout << -1 << std::endl;
-			
-	}
-	
-}
 
 std::vector<size_t>
 buildJacobsthalOrder(size_t n)
@@ -103,41 +78,32 @@ checkInput(std::vector<int> &raw, std::stringstream &tmp) {
 }
 
 int main(int ac, char ** av) {
-	std::vector<int>	raw;
+	vec_int				raw;
+	vec_pair			pair;
 	std::stringstream	tmp;
-	size_t				i;
-	PmergeMe			mergeInsertionAlgo;
+	PmergeMe			pmerge;
 	
 	if (ac <= 1)
 		return (std::cerr << "Error" << std::endl, 1);
-	for (i = 1; av[i]; ++i) {
+	for (size_t i = 1; av[i]; ++i) {
 		tmp << av[i];
 		if (av[i + 1])
 			tmp << ",";
 	}
 	if (!checkInput(raw, tmp))
 		return (std::cerr << "Error" << std::endl, 1);
-	mergeInsertionAlgo.setInput(raw);
-	printC(buildJacobsthalOrder(mergeInsertionAlgo.getPair().size()));
-	std::cout << "---------------------------" << std::endl;
-	printP(mergeInsertionAlgo.getPair());
-	std::cout << "---------------------------" << std::endl;
 	
-	printC(PmergeMe::generateIndex(raw.size() / 2));
+	pmerge.setRaw(raw);
+	std::cout << "Jacobsthal suite :" << std::endl;
+	PmergeMe::printC(buildJacobsthalOrder(pmerge.getRaw().size()));
 	std::cout << "---------------------------" << std::endl;
-	raw = mergeInsertionAlgo.getPair();
-	std::cout << "size of raw/2 = " <<raw.size() / 2 << std::endl;
-	
-	PmergeMe::fordJohnson(raw, PmergeMe::generateIndex(raw.size()));
-	// printC(buildJacobsthalOrder(3));
-	// printC(buildJacobsthalOrder(1000));
-	// if (!raw.empty())
-	// 	printC<std::vector<int> >(raw); //TEST
-	// try {
-	// }
-	// catch(const std::exception& e) {
-	// 	std::cerr << e.what() << '\n';
-	// }
+	std::cout << "raw suite :" << std::endl;
+	PmergeMe::printC(raw);
+	std::cout << "pmerge raw suite :" << std::endl;
+	PmergeMe::printC(pmerge.getRaw());
+
+	PmergeMe::fordJohnson(raw);
+
 	
 	return 0;
 }

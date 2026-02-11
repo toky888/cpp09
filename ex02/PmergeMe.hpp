@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/05 11:26:57 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/11 18:47:11 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,31 +17,39 @@
 # include <vector>
 # include <sstream>
 # include <algorithm>
-# define NO_LEFTOVER -1;
+# define NO_PAIR	-1;
+// # define SORT		true;
+// # define NO_SORT		true;
+
 
 typedef std::vector<int> vec_int;
-typedef std::vector<int, int> vec_pair;
-typedef struct	s_pair{
-	vec_int	bigPair;
-	vec_int	smallPair;
-	int		leftOver;
-} t_pair;
+typedef std::vector<vec_int> vec_pair;
 // typedef std::vector<std::pair<int, int> > vec_pair;
 
 class PmergeMe
 {
 private:
-	vec_int			_input;
+	vec_int			_raw;
 private:
 	PmergeMe(PmergeMe const &src);
 	PmergeMe &operator=(PmergeMe const &rhs);
 public:
 	PmergeMe();
 	~PmergeMe();
-	void	setInput(vec_int input);
-	vec_int	getPair() const;
-	static vec_int generateIndex(size_t size);
-	static void	fordJohnson(vec_int &chain, vec_int index);
+	void	setRaw(vec_int input);
+	vec_int	getRaw() const;
+	static void	fordJohnson(vec_int &chain);
+
+	// template <typename T>
+	// static void
+	// printP(T const &cont) {
+	// 	typename T::const_iterator it = cont.begin();
+	// 	for (; it != cont.end(); ++it) {
+	// 		std::cout << it->first << ":" << it->second << " , ";
+	// 	}
+	// 	std::cout << std::endl;
+		
+	// }
 
 	template <typename T>
 	static void
@@ -51,7 +59,7 @@ public:
 			std::cout << *it << ",";
 		}
 		std::cout << std::endl;
-}
+	}
 };
 
 #endif
