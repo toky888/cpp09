@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/12 01:26:35 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/13 17:27:44 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -132,6 +132,8 @@ int main(int ac, char ** av) {
 		return 1;
 	std::cout << "pair suite :" << std::endl;
 	PmergeMe::printP<vec_pair, vec_int>(pmerge.getChain());
+
+	
 	pmerge.fordJohnson();
 	return 0;
 }

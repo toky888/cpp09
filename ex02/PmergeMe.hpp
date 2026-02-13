@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/12 01:42:18 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/13 18:12:28 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,13 @@ public:
 	~PmergeMe();
 	void	setRaw(vec_int input);
 	void	setChain(vec_pair input);
+	void	clearChain();
+	void	pushBackChain(vec_int &);
 	vec_int	getRaw() const;
 	vec_pair	getChain() const;
 	void		fordJohnson();
-	void		sortPair();
+	vec_int const sortPair();
+	void makePair();
 
 	template <typename T, typename U>
 	static void
