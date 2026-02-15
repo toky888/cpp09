@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/13 17:27:44 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/15 18:30:37 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,38 +14,7 @@
 
 
 
-std::vector<size_t>
-buildJacobsthalOrder(size_t n)
-{
-     std::vector<size_t> order;
-    if (n <= 1)
-        return order;
 
-    std::vector<size_t> t;
-    t.push_back(1);
-    t.push_back(3);
-
-    while (t.back() < n)
-        t.push_back(t[t.size()-1] + 2 * t[t.size()-2]);
-
-    // Step 2 — Generate blocks
-    size_t prev = 1;  // t0
-    for (size_t k = 1; k < t.size(); ++k)
-    {
-        size_t curr = t[k];
-        size_t high = curr < n ? curr : n;
-
-        // Insert indices from high down to prev+1
-        for (size_t i = high; i > prev; --i)
-            order.push_back(i - 1); // 0-based index
-
-        prev = curr;
-        if (curr >= n)
-            break;
-    }
-
-    return order;
-}
 
 static void
 trim_char(std::string& s, char c)
@@ -119,9 +88,9 @@ int main(int ac, char ** av) {
 		return (std::cerr << "Error" << std::endl, 1);
 	
 	pmerge.setRaw(raw);
-	std::cout << "Jacobsthal suite :" << std::endl;
-	PmergeMe::printC(buildJacobsthalOrder(pmerge.getRaw().size()));
-	std::cout << "---------------------------" << std::endl;
+	// std::cout << "Jacobsthal suite :" << std::endl;
+	// PmergeMe::printC(PmergeMe::buildJacobsthalOrder(pmerge.getRaw().size()));
+	// std::cout << "---------------------------" << std::endl;
 	std::cout << "raw suite :" << std::endl;
 	PmergeMe::printC(raw);
 	std::cout << "pmerge raw suite :" << std::endl;

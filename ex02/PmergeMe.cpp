@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:34:40 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/13 18:34:36 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/15 19:33:27 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,38 @@ PmergeMe::sortPair() {
 	return leftOver;
 }
 
+void
+PmergeMe::dividePair_indexation(size_t comp) {
+	vec_int tmp;
+	vec_int tmp2;
+	vec_pair pair = this->getChain();
+	vec_pair::iterator it = pair.begin();
+
+	this->clearChain();
+	for (int i = 0; it != pair.end(); ++it, ++i) {
+		tmp.insert(tmp.end(), (*it).begin(), (*it).begin() + comp);
+		tmp.push_back(i);
+		tmp2.insert(tmp2.end(), (*it).begin() + comp, (*it).end());
+		tmp2.push_back(i);
+		this->pushBackChain(tmp);
+		this->pushBackChain(tmp2);
+		tmp.clear();
+		tmp2.clear();
+	}
+}
+
+void
+PmergeMe::removeIndex() {
+	vec_pair pair = this->getChain();
+	vec_pair::iterator it = pair.begin();
+
+	this->clearChain();
+	for (; it != pair.end(); ++it) {
+		(*it).pop_back();
+	}
+	this->setChain(pair);
+}
+
 void PmergeMe::makePair() {
 	vec_int tmp;
 	vec_pair pair = this->getChain();
@@ -91,30 +123,69 @@ void PmergeMe::makePair() {
 }
 
 void PmergeMe::fordJohnson() {
-	// static size_t	level = 0;
-	// size_t			comp = pow(2, level);
+	static size_t	level = 0;
 	vec_int leftOver;
+	// std::vector<size_t> jacobSthalSuit;
 	
 	if (this->getChain().size() <= 1)
 		return ;
 	leftOver = this->sortPair();
 	
-	std::cout << "---------------------------" << std::endl;
-	std::cout << "pair suite before makePair:" << std::endl;
-	PmergeMe::printP<vec_pair, vec_int>(this->getChain());
-	if (!leftOver.empty()) {
-		std::cout << "left over  = [";
-		PmergeMe::printC(leftOver);
-	}
+	// std::cout << "---------------------------" << std::endl;
+	// std::cout << "pair suite before makePair:" << std::endl;
+	// PmergeMe::printP<vec_pair, vec_int>(this->getChain());
+	// if (!leftOver.empty()) {
+	// 	std::cout << "left over  = [";
+	// 	PmergeMe::printC(leftOver);
+	// }
 	
 	this->makePair();
 	
 	std::cout << "---------------------------" << std::endl;
-	std::cout << "pair suite after sort:" << std::endl;
+	std::cout << "pair suite before FJ: level"<< level << std::endl;
 	PmergeMe::printP<vec_pair, vec_int>(this->getChain());
-	
+	++level;
 	this->fordJohnson();
-	
+	--level;
+	size_t			comp = pow(2, level);
+	this->dividePair_indexation(comp);
+	// std::cout << "---------------------------" << std::endl;
+	// std::cout << "pair suite after FJ: level"<< level<< std::endl;
+	// PmergeMe::printP<vec_pair, vec_int>(this->getChain());
+	this->removeIndex();
 	return ;
+}
+
+std::vector<size_t>
+PmergeMe::buildJacobsthalOrder(size_t n)
+{
+     std::vector<size_t> order;
+    if (n <= 1)
+        return order;
+
+    std::vector<size_t> t;
+    t.push_back(1);
+    t.push_back(3);
+
+    while (t.back() < n)
+        t.push_back(t[t.size()-1] + 2 * t[t.size()-2]);
+
+    // Step 2 — Generate blocks
+    size_t prev = 1;  // t0
+    for (size_t k = 1; k < t.size(); ++k)
+    {
+        size_t curr = t[k];
+        size_t high = curr < n ? curr : n;
+
+        // Insert indices from high down to prev+1
+        for (size_t i = high; i > prev; --i)
+            order.push_back(i - 1); // 0-based index
+
+        prev = curr;
+        if (curr >= n)
+            break;
+    }
+
+    return order;
 }
 

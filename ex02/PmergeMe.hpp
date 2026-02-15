@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/13 18:12:28 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/15 19:29:32 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,10 @@ public:
 	vec_int	getRaw() const;
 	vec_pair	getChain() const;
 	void		fordJohnson();
-	vec_int const sortPair();
+	static std::vector<size_t>	buildJacobsthalOrder(size_t n);
+	vec_int const	sortPair();
+	void 			dividePair_indexation(size_t comp);
+	void			removeIndex();
 	void makePair();
 
 	template <typename T, typename U>
