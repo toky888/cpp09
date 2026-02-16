@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/15 18:30:37 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/16 15:58:33 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,9 +88,9 @@ int main(int ac, char ** av) {
 		return (std::cerr << "Error" << std::endl, 1);
 	
 	pmerge.setRaw(raw);
-	// std::cout << "Jacobsthal suite :" << std::endl;
-	// PmergeMe::printC(PmergeMe::buildJacobsthalOrder(pmerge.getRaw().size()));
-	// std::cout << "---------------------------" << std::endl;
+	std::cout << "Jacobsthal suite :" << std::endl;
+	PmergeMe::printC(PmergeMe::buildJacobsthalOrder(pmerge.getRaw().size()));
+	std::cout << "---------------------------" << std::endl;
 	std::cout << "raw suite :" << std::endl;
 	PmergeMe::printC(raw);
 	std::cout << "pmerge raw suite :" << std::endl;

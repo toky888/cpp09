@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:34:40 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/15 19:33:27 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/16 19:05:15 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,13 @@ PmergeMe::getChain() const {
 // 	std::cout << std::endl;
 		
 // }
+
+static void
+testPrintP(std::string const &s, vec_pair const &p, size_t const &level) {
+	std::cout << "---------------------------" << std::endl;
+	std::cout << s << level << std::endl;
+	PmergeMe::printP<vec_pair, vec_int>(p);
+}
 
 vec_int const 
 PmergeMe::sortPair() {
@@ -122,9 +129,27 @@ void PmergeMe::makePair() {
 	}
 }
 
+void FJInsertion(std::vector<size_t> const jSuit, vec_pair &pair) {
+	vec_pair::iterator	index = pair.begin();
+	unsigned int		difference;
+	vec_pair::iterator insertIt;
+	
+	difference = 0;
+	for (std::vector<size_t>::const_iterator it = jSuit.cbegin();
+		it != jSuit.cend(); ++it)
+	{
+		insertIt = std::lower_bound(pair.begin(), index, *(index + 1));
+		pair.insert(insertIt, *(index + 1));
+		pair.erase(index + 1);
+	}
+}
+
 void PmergeMe::fordJohnson() {
-	static size_t	level = 0;
-	vec_int leftOver;
+	static size_t		level = 0;
+	vec_int				leftOver;
+	std::vector<size_t>	jSuit;
+	vec_pair			pair;
+	
 	// std::vector<size_t> jacobSthalSuit;
 	
 	if (this->getChain().size() <= 1)
@@ -141,17 +166,19 @@ void PmergeMe::fordJohnson() {
 	
 	this->makePair();
 	
-	std::cout << "---------------------------" << std::endl;
-	std::cout << "pair suite before FJ: level"<< level << std::endl;
-	PmergeMe::printP<vec_pair, vec_int>(this->getChain());
+	// testPrintP("pair suite before FJ: level", this->getChain(), level );
+	
 	++level;
 	this->fordJohnson();
 	--level;
 	size_t			comp = pow(2, level);
 	this->dividePair_indexation(comp);
-	// std::cout << "---------------------------" << std::endl;
-	// std::cout << "pair suite after FJ: level"<< level<< std::endl;
-	// PmergeMe::printP<vec_pair, vec_int>(this->getChain());
+	pair = this->getChain();
+	jSuit = PmergeMe::buildJacobsthalOrder(pair.size() / 2);
+	FJInsertion(jSuit, pair);
+	
+	// testPrintP("pair suite after FJ: level", this->getChain(), level );
+
 	this->removeIndex();
 	return ;
 }
@@ -160,6 +187,8 @@ std::vector<size_t>
 PmergeMe::buildJacobsthalOrder(size_t n)
 {
      std::vector<size_t> order;
+
+	order.push_back(0);
     if (n <= 1)
         return order;
 
