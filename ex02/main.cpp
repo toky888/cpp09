@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/17 17:36:11 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/17 22:19:12 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int main(int ac, char ** av) {
 		return (std::cerr << "Error" << std::endl, 1);
 	
 	pmerge.setRaw(raw);
-	std::cout << "Before :" << std::endl;
+	std::cout << "Before :  ";
 	PmergeMe::printC(pmerge.getRaw());
 	// std::cout << "---------------------------" << std::endl;
 	// std::cout << "Jacobsthal suite :" << std::endl;
@@ -108,7 +108,7 @@ int main(int ac, char ** av) {
 	
 	pmerge.fordJohnson();
 	// std::cout << "---------------------------" << std::endl;
-	std::cout << "After :" << std::endl;
+	std::cout << "After :  ";
 	PmergeMe::printC(pmerge.getRaw());
 	return 0;
 }

@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/17 15:18:03 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/17 22:14:21 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,7 @@ public:
 	printC(T cont) {
 		typename T::iterator it = cont.begin();
 		for (; it != cont.end(); ++it) {
-			std::cout << *it << ",";
+			std::cout << *it << " ";
 		}
 		std::cout << std::endl;
 	}
