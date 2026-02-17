@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/16 15:55:23 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/17 15:18:03 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,8 @@ public:
 	vec_int const	sortPair();
 	void 			dividePair_indexation(size_t comp);
 	void			removeIndex();
-	void makePair();
+	void 			makePair();
+	void			cleanData();
 
 	template <typename T, typename U>
 	static void

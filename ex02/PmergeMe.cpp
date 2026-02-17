@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:34:40 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/16 19:05:15 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/17 15:25:37 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,8 @@ PmergeMe::removeIndex() {
 	this->setChain(pair);
 }
 
-void PmergeMe::makePair() {
+void
+PmergeMe::makePair() {
 	vec_int tmp;
 	vec_pair pair = this->getChain();
 	vec_pair::iterator it = pair.begin();
@@ -129,19 +130,78 @@ void PmergeMe::makePair() {
 	}
 }
 
-void FJInsertion(std::vector<size_t> const jSuit, vec_pair &pair) {
-	vec_pair::iterator	index = pair.begin();
-	unsigned int		difference;
-	vec_pair::iterator insertIt;
-	
-	difference = 0;
-	for (std::vector<size_t>::const_iterator it = jSuit.cbegin();
-		it != jSuit.cend(); ++it)
-	{
-		insertIt = std::lower_bound(pair.begin(), index, *(index + 1));
-		pair.insert(insertIt, *(index + 1));
-		pair.erase(index + 1);
+void
+PmergeMe::cleanData() {
+	vec_pair	chain;
+	vec_int		raw;
+
+	chain = this->getChain();
+	for (vec_pair::iterator it = chain.begin(); it != chain.end(); ++it) {
+		raw.push_back(*(it->begin()));
 	}
+	this->setRaw(raw);
+}
+
+static void
+newMainChain(vec_pair &v, vec_pair const &pair) {
+	PmergeMe	tmp;
+	int i;
+	vec_pair	p;
+	vec_int		tmpV;
+
+	tmp.setChain(pair);
+	tmp.removeIndex();
+	p = tmp.getChain();
+	i = 0;
+	for (vec_pair::const_iterator	it = p.begin(); it != p.end(); it += 2)
+	{
+		if (it + 1 == p.end()) {
+			std::cout << "Problem"  << std::endl;
+			break;
+		}
+		tmpV = *it;
+		tmpV.push_back(i);
+		v.push_back(tmpV);
+		tmpV.clear();
+		++i;
+	}
+}
+
+static void
+LOinsertion(vec_pair &pair, vec_int &lo) {
+	vec_pair::iterator it = std::lower_bound(pair.begin(), pair.end(), lo);
+	lo.push_back(-42);
+	pair.insert(it, lo);
+}
+
+static void
+FJInsertion(std::vector<size_t> const jSuit, vec_pair &pair) {
+	vec_pair::iterator	index = pair.begin();
+	vec_pair			mainChain;
+	size_t				diff;
+	vec_pair::iterator	insertIt;
+	
+	
+
+	diff = 0;
+	newMainChain(mainChain, pair);
+	for (std::vector<size_t>::const_iterator it = jSuit.begin();
+		it != jSuit.end(); ++it)
+	{
+		size_t i;
+
+		i = *it;
+		insertIt = std::lower_bound(mainChain.begin(), mainChain.begin() + diff, *(index + (i * 2) + 1));
+		mainChain.insert(insertIt, *(index + (i * 2) + 1));
+		++diff;
+		
+		if ((it + 1) != jSuit.end() && *it < *(it + 1)) {
+			diff += *(it + 1);
+		}
+	}
+	pair.clear();
+	pair = mainChain;
+	testPrintP("new chain", mainChain, 42);
 }
 
 void PmergeMe::fordJohnson() {
@@ -166,7 +226,7 @@ void PmergeMe::fordJohnson() {
 	
 	this->makePair();
 	
-	// testPrintP("pair suite before FJ: level", this->getChain(), level );
+	testPrintP("pair suite before FJ: level", this->getChain(), level );
 	
 	++level;
 	this->fordJohnson();
@@ -176,10 +236,15 @@ void PmergeMe::fordJohnson() {
 	pair = this->getChain();
 	jSuit = PmergeMe::buildJacobsthalOrder(pair.size() / 2);
 	FJInsertion(jSuit, pair);
+	if (!leftOver.empty())
+		LOinsertion(pair, leftOver);
 	
-	// testPrintP("pair suite after FJ: level", this->getChain(), level );
-
+	this->clearChain();
+	this->setChain(pair);
 	this->removeIndex();
+	if (level == 0)
+		this->cleanData();
+	testPrintP("pair suite after FJ: level", this->getChain(), level );
 	return ;
 }
 
@@ -187,7 +252,7 @@ std::vector<size_t>
 PmergeMe::buildJacobsthalOrder(size_t n)
 {
      std::vector<size_t> order;
-
+	 
 	order.push_back(0);
     if (n <= 1)
         return order;
