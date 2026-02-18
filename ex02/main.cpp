@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/17 22:19:12 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/18 03:18:05 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,36 @@ FJSuitData(vec_int const &array, PmergeMe &pmerge) {
 	return true;
 }
 
+void
+push_back_toPairDeq(deq_pair &arrayP, deq_int const & array)
+{
+	deq_int::const_iterator	it = array.begin();
+	deq_int					tmp;
+	
+	for (; it != array.end(); ++it) {
+		tmp.push_back(*it);
+		arrayP.push_back(tmp);
+		tmp.clear();
+	}
+}
+
+bool
+FJSuitDataDeq(deq_int const &array, PmergeMe &pmerge) {
+	deq_pair				arrayP;
+	
+	if(array.empty())
+		return false; 
+	push_back_toPairDeq(arrayP, array);
+	pmerge.setChainDeq(arrayP);
+	return true;
+}
+
 int main(int ac, char ** av) {
 	vec_int				raw;
-	vec_pair			pair;
 	std::stringstream	tmp;
 	PmergeMe			pmerge;
+	timeval				start, end;
+
 	
 	if (ac <= 1)
 		return (std::cerr << "Error" << std::endl, 1);
@@ -86,29 +111,54 @@ int main(int ac, char ** av) {
 	}
 	if (!checkInput(raw, tmp))
 		return (std::cerr << "Error" << std::endl, 1);
-	
+	deq_int	rawDeq(raw.begin(), raw.end());
 	pmerge.setRaw(raw);
 	std::cout << "Before :  ";
 	PmergeMe::printC(pmerge.getRaw());
-	// std::cout << "---------------------------" << std::endl;
-	// std::cout << "Jacobsthal suite :" << std::endl;
-	// PmergeMe::printC(PmergeMe::buildJacobsthalOrder(pmerge.getRaw().size()));
-	// std::cout << "---------------------------" << std::endl;
-	// std::cout << "raw suite :" << std::endl;
-	// PmergeMe::printC(raw);
-	// std::cout << "pmerge raw suite :" << std::endl;
-	// PmergeMe::printC(pmerge.getRaw());
-	// std::cout << "---------------------------" << std::endl;
-	
 	if (!FJSuitData(raw, pmerge))
 		return 1;
-	// std::cout << "pair suite :" << std::endl;
-	// PmergeMe::printP<vec_pair, vec_int>(pmerge.getChain());
-
-	
+		
+    gettimeofday(&start, NULL);
 	pmerge.fordJohnson();
-	// std::cout << "---------------------------" << std::endl;
+    gettimeofday(&end, NULL);
+	long seconds  = end.tv_sec  - start.tv_sec;
+    long useconds = end.tv_usec - start.tv_usec;
+    if (useconds < 0)
+	{
+		--seconds;
+		useconds += 1000000;
+	}
+
+	double totalUsVec = seconds + useconds / 1000000.0;
+
 	std::cout << "After :  ";
 	PmergeMe::printC(pmerge.getRaw());
+	
+	std::cout << "---------------------------" << std::endl;
+	
+	pmerge.setRawDeq(rawDeq);
+	// std::cout << "Before :  ";
+	// PmergeMe::printC(pmerge.getRawDeq());
+	if (!FJSuitDataDeq(rawDeq, pmerge))
+		return 1;
+    gettimeofday(&start, NULL);
+	pmerge.fordJohnsonDeq();
+    gettimeofday(&end, NULL);
+	seconds  = end.tv_sec  - start.tv_sec;
+    useconds = end.tv_usec - start.tv_usec;
+    if (useconds < 0)
+	{
+		--seconds;
+		useconds += 1000000;
+	}
+
+	double totalUsDeq = seconds + useconds / 1000000.0;
+	// std::cout << "After :  ";
+	// PmergeMe::printC(pmerge.getRaw());
+	std::cout << std::fixed << std::setprecision(5);
+	std::cout << "Time to process a range of " <<  raw.size() << " elements with std::vector : " << totalUsVec << " us"<< std::endl;
+	std::cout << "Time to process a range of " <<  rawDeq.size() << " elements with std::deque : " << totalUsDeq << " us"<< std::endl;
+	
+	// Time to process a range of 5 elements with std::[..] : 0.00031 us
 	return 0;
 }

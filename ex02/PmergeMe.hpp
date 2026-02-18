@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:32:26 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/17 22:14:21 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/18 03:09:20 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,26 @@
 # include <iostream>
 # include <string>
 # include <vector>
+# include <deque>
 # include <sstream>
 # include <algorithm>
 # include <cmath>
+#include <sys/time.h>
+#include <iomanip>
 # define NO_PAIR	-1
-// # define SORT		true;
-// # define NO_SORT		true;
-
 
 typedef std::vector<int> vec_int;
+typedef std::deque<int> deq_int;
 typedef std::vector<vec_int> vec_pair;
-// typedef std::vector<std::pair<int, int> > vec_pair;
+typedef std::deque<deq_int> deq_pair;
 
 class PmergeMe
 {
 private:
-	vec_int		_raw;
+	vec_int		_rawVec;
+	deq_int	_rawDeq;
 	vec_pair	_chain;
+	deq_pair	_chainDeq;
 private:
 	PmergeMe(PmergeMe const &src);
 	PmergeMe &operator=(PmergeMe const &rhs);
@@ -51,6 +54,20 @@ public:
 	void			removeIndex();
 	void 			makePair();
 	void			cleanData();
+	
+	void	setRawDeq(deq_int input);
+	void	setChainDeq(deq_pair input);
+	void	clearChainDeq();
+	void	pushBackChainDeq(deq_int &);
+	deq_int	getRawDeq() const;
+	deq_pair	getChainDeq() const;
+	void		fordJohnsonDeq();
+	static std::deque<size_t>	buildJacobsthalOrderDeq(size_t n);
+	deq_int const	sortPairDeq();
+	void 			dividePair_indexationDeq(size_t comp);
+	void			removeIndexDeq();
+	void 			makePairDeq();
+	void			cleanDataDeq();
 
 	template <typename T, typename U>
 	static void
