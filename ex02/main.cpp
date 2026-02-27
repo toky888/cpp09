@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/27 11:33:09 by tmory             #+#    #+#             */
-/*   Updated: 2026/02/18 03:18:05 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/18 17:54:59 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,13 +95,63 @@ FJSuitDataDeq(deq_int const &array, PmergeMe &pmerge) {
 	return true;
 }
 
+static void
+fordJohnsonVector(PmergeMe &pmerge, double &totalUsVec) {
+	timeval	start;
+	timeval	end;
+	
+	gettimeofday(&start, NULL);
+	pmerge.fordJohnson();
+    gettimeofday(&end, NULL);
+	long seconds  = end.tv_sec  - start.tv_sec;
+    long useconds = end.tv_usec - start.tv_usec;
+    if (useconds < 0)
+	{
+		--seconds;
+		useconds += 1000000;
+	}
+
+	totalUsVec = seconds + useconds / 1000000.0;
+}
+
+static void
+fordJohnsonDeque(PmergeMe &pmerge, double &totalUsDeq) {
+	timeval	start;
+	timeval	end;
+	
+	gettimeofday(&start, NULL);
+	pmerge.fordJohnsonDeq();
+    gettimeofday(&end, NULL);
+	long seconds  = end.tv_sec  - start.tv_sec;
+    long useconds = end.tv_usec - start.tv_usec;
+    if (useconds < 0)
+	{
+		--seconds;
+		useconds += 1000000;
+	}
+	totalUsDeq = seconds + useconds / 1000000.0;
+}
+
+void
+fordJohnsonStart(PmergeMe &pmerge) {
+	double	totalUsVec(0.0);
+	double	totalUsDeq(0.0);
+	
+	fordJohnsonVector(pmerge, totalUsVec);
+	std::cout << "After :  ";
+	PmergeMe::printC(pmerge.getRaw());
+	
+    fordJohnsonDeque(pmerge, totalUsDeq);
+	std::cout << std::fixed << std::setprecision(5);
+	std::cout << "Time to process a range of " <<  pmerge.getRaw().size() << " elements with std::vector : " << totalUsVec << " us"<< std::endl;
+	std::cout << "Time to process a range of " <<  pmerge.getRawDeq().size() << " elements with std::deque : " << totalUsDeq << " us"<< std::endl;
+}
+
 int main(int ac, char ** av) {
 	vec_int				raw;
 	std::stringstream	tmp;
 	PmergeMe			pmerge;
-	timeval				start, end;
 
-	
 	if (ac <= 1)
 		return (std::cerr << "Error" << std::endl, 1);
 	for (size_t i = 1; av[i]; ++i) {
@@ -117,48 +167,9 @@ int main(int ac, char ** av) {
 	PmergeMe::printC(pmerge.getRaw());
 	if (!FJSuitData(raw, pmerge))
 		return 1;
-		
-    gettimeofday(&start, NULL);
-	pmerge.fordJohnson();
-    gettimeofday(&end, NULL);
-	long seconds  = end.tv_sec  - start.tv_sec;
-    long useconds = end.tv_usec - start.tv_usec;
-    if (useconds < 0)
-	{
-		--seconds;
-		useconds += 1000000;
-	}
-
-	double totalUsVec = seconds + useconds / 1000000.0;
-
-	std::cout << "After :  ";
-	PmergeMe::printC(pmerge.getRaw());
-	
-	std::cout << "---------------------------" << std::endl;
-	
 	pmerge.setRawDeq(rawDeq);
-	// std::cout << "Before :  ";
-	// PmergeMe::printC(pmerge.getRawDeq());
 	if (!FJSuitDataDeq(rawDeq, pmerge))
 		return 1;
-    gettimeofday(&start, NULL);
-	pmerge.fordJohnsonDeq();
-    gettimeofday(&end, NULL);
-	seconds  = end.tv_sec  - start.tv_sec;
-    useconds = end.tv_usec - start.tv_usec;
-    if (useconds < 0)
-	{
-		--seconds;
-		useconds += 1000000;
-	}
-
-	double totalUsDeq = seconds + useconds / 1000000.0;
-	// std::cout << "After :  ";
-	// PmergeMe::printC(pmerge.getRaw());
-	std::cout << std::fixed << std::setprecision(5);
-	std::cout << "Time to process a range of " <<  raw.size() << " elements with std::vector : " << totalUsVec << " us"<< std::endl;
-	std::cout << "Time to process a range of " <<  rawDeq.size() << " elements with std::deque : " << totalUsDeq << " us"<< std::endl;
-	
-	// Time to process a range of 5 elements with std::[..] : 0.00031 us
+	fordJohnsonStart(pmerge);
 	return 0;
 }

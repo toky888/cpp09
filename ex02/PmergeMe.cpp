@@ -255,9 +255,6 @@ PmergeMe::buildJacobsthalOrder(size_t n)
     return order;
 }
 
-
-//-------------------------------------------------list----------------------------------------------------*/
-
 void
 PmergeMe::setRawDeq(deq_int input) {
 	this->_rawDeq = input;

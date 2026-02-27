@@ -6,7 +6,7 @@
 /*   By: tmory <tmory@student.42antananarivo.mg>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/19 08:56:24 by tmory             #+#    #+#             */
-/*   Updated: 2026/01/22 17:31:22 by tmory            ###   ########.fr       */
+/*   Updated: 2026/02/24 09:18:46 by tmory            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,16 +76,14 @@ void	Btc::verifyInputHeader(std::string const &head) {
 	std::string			value;
 	
 	if ((std::count(head.begin(), head.end(), '|') != 1)) {
-		std::cout << "Error: bad header input =>" << head << std::endl;
-		return ;
+		throw(std::logic_error("Error: bad header input => " + head));
 	}
 	std::getline(headStream, date, '|');
 	std::getline(headStream, value);
 	Btc::trim_char(date, ' ');
 	Btc::trim_char(value, ' ');
 	if (date != "date" || value != "value") {
-		std::cout << "Error: bad header input =>" << head << std::endl;
-		return ;
+		throw(std::logic_error("Error: bad header input => " + head));
 	}
 }
 
@@ -190,7 +188,7 @@ static void	printTrend(mapSD const &data,
 {
 	mapSD::const_iterator	it = data.upper_bound(date);
 	
-	if (it == data.begin() || it == data.end())
+	if (it == data.begin())
 		std::cout << "Error: input date not in database!" << std::endl;
 	else {
 		--it;
